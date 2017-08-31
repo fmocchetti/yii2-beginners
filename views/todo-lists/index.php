@@ -20,12 +20,30 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'title',
             'description',
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                 'template' => '{items} {update} {delete} ',
+                 'buttons' => [
+                     'items' => function($url, $model) {
+                        return Html::a(
+                            '<span class="glyphicon glyphicon glyphicon-th-list"></span>',
+                            ['todo-items/index', 'id' => $model->lid ], 
+                            [
+                                'title' => 'View Items',
+                                'data-pjax' => '0',
+                            ]
+                        );
+                    },
+                ]
+
+            ],
+
+
         ],
     ]); ?>
 </div>

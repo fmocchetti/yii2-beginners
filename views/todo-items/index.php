@@ -18,9 +18,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Todo Items', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
+    <?php if ($this->beginCache('item-list', ['duration' => 3600, 'enabled' => false])) : ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             ['attribute' => 'todo_list_id',
@@ -28,26 +31,35 @@ $this->params['breadcrumbs'][] = $this->title;
                 $list = \app\models\TodoLists::findOne($data->todo_list_id);
                 return $list->title;
             },
-            'label' => 'ToDo List'
+            'label' => 'TODO List'
             ],
             'content',
+            'completed_at',
             [
                 'class' => 'yii\grid\ActionColumn',
                  'template' => '{complete} {delete}',
                  'buttons' => [
                      'complete' => function($url, $model) {
-                        return Html::a(
-                            '<span class="glyphicon glyphicon-ok"></span>',
-                            ['todo-items/complete', 'id' => $model->iid ], 
-                            [
-                                'title' => 'Complete',
-                                'data-pjax' => '0',
-                            ]
-                        );
+                        if(!$model->completed_at) {
+                            return Html::a(
+                                '<span class="glyphicon glyphicon-ok"></span>',
+                                ['todo-items/complete', 'id' => $model->iid ], 
+                                [
+                                    'title' => 'Complete',
+                                    'data-pjax' => '0',
+                                ]
+                            );
+                        }
                     },
                 ]
 
             ],
         ],
     ]); ?>
+
+    <?php  
+        $this->endCache(); 
+        endif; 
+    ?>
+
 </div>

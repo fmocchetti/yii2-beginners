@@ -1,7 +1,5 @@
 -- Adminer 4.3.1 PostgreSQL dump
 
-\connect "basic";
-
 DROP TABLE IF EXISTS "todo_items";
 CREATE SEQUENCE todo_items_iid_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;
 

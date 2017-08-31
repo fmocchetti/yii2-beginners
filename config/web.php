@@ -42,10 +42,14 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<controller:\w+>/<id:\d+>' => '<controller>/view',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
         ],        
     ],
     'params' => $params,
+    'defaultRoute' => 'todo-lists',
 ];
 
 if (YII_ENV_DEV) {

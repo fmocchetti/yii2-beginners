@@ -33,9 +33,10 @@ class TodoItemsController extends Controller
      * Lists all TodoItems models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id = null)
     {
         $searchModel = new TodoItemsSearch();
+        if($id) $searchModel->todo_list_id = $id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -66,7 +67,7 @@ class TodoItemsController extends Controller
         $model = new TodoItems();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->iid]);
+            return $this->redirect(['index', 'id' => $model->todo_list_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -99,12 +100,30 @@ class TodoItemsController extends Controller
      * @param integer $id
      * @return mixed
      */
+    public function actionComplete($id)
+    {
+        $model = $this->findModel($id);
+        $model->completed_at = date('Y-m-d H:i:s.u');
+        $model->save();
+
+        return $this->redirect(['index']);
+    }
+
+
+    /**
+     * Deletes an existing TodoItems model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
+
+
 
     /**
      * Finds the TodoItems model based on its primary key value.
